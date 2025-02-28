@@ -20,4 +20,4 @@ const file = fs.readFileSync('micarhivo.txt', 'utf-8')
 La funcion ```readFileSync(archivo,codificacion)``` recibe dos parametros:
 * El path o ruta al archivo que necesitamos abrir
 * la codificacion en la que viene el archivo, la codificacion es importante para respetar los acentos o caracteres especiales.
-* 
+  
