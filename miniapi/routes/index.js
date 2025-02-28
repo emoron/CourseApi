@@ -9,4 +9,8 @@ router.get('/', function (req, res) {
   res.send(file)
 });
 
+router.get('/chart', function (req, res, next) {
+  // res.render('index', { title: 'CHARTS' });
+  res.sendFile(path.join(__dirname, '../views/chart.html'));
+});
 module.exports = router;
