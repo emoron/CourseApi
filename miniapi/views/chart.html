@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfica con D3</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+
+  <script>
+    // Definir los datos como un array de objetos
+    const data = [
+      { year: "2025", count_movies: 13 },
+      { year: "2020", count_movies: 6 },
+      { year: "2004", count_movies: 12 },
+      { year: "1995", count_movies: 20 },
+      { year: "2007", count_movies: 23 }
+    ];
+
+    // Dimensiones del gráfico
+    const width = 640;
+    const height = 400;
+    const marginTop = 20;
+    const marginRight = 20;
+    const marginBottom = 30;
+    const marginLeft = 40;
+
+    // Escalas
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.year)) // Convertir años en dominio
+      .range([marginLeft, width - marginRight])
+      .padding(0.1);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.count_movies)]) // Ajustar máximo
+      .nice() // Hace que los valores de los ejes sean redondeados
+      .range([height - marginBottom, marginTop]);
+
+    // Crear SVG
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto;");
+
+    // Dibujar barras
+    svg.append("g")
+      .attr("fill", "steelblue")
+      .selectAll("rect")
+      .data(data)
+      .join("rect")
+      .attr("x", d => x(d.year))
+      .attr("y", d => y(d.count_movies))
+      .attr("height", d => y(0) - y(d.count_movies))
+      .attr("width", x.bandwidth());
+
+    // Ejes
+    svg.append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x));
+
+    svg.append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y));
+  </script>
+
+</body>
+</html>
